@@ -20,7 +20,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint src --max-warnings=0",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "prettier": "prettier --write"
   },
   "eslintConfig": {
     "extends": [
@@ -47,13 +50,7 @@
     "eslint-plugin-react": "^7.30.1",
     "eslint-plugin-react-hooks": "^4.6.0",
     "husky": "^8.0.1",
-    "lint-staged": "^13.0.3"
-  },
-  "lint-staged": {
-    "src/*.{js,jsx,ts,tsx}": [
-      "tsc --no-emit",
-      "eslint --max-warnings 0",
-      "prettier --write"
-    ]
+    "lint-staged": "^13.0.3",
+    "prettier": "^2.7.1"
   }
 }
