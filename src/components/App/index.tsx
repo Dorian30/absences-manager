@@ -1,5 +1,14 @@
+import { ThemeProvider } from 'styled-components';
+import { DARK_THEME } from '@constants';
+
+import { GlobalStyles } from '../GlobalStyles';
+
 function App() {
-  return <div className="App">crewmeister</div>;
+  return (
+    <ThemeProvider theme={DARK_THEME}>
+      <GlobalStyles />
+    </ThemeProvider>
+  );
 }
 
 export default App;
