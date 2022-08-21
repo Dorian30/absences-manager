@@ -14,7 +14,7 @@ export interface IExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
 
 const DEFAULT_STATE: TRootState = {
   user: {
-    theme: THEMES_TYPES.DARK
+    theme: THEMES_TYPES.dark
   }
 };
 

@@ -52,11 +52,11 @@ export const LIGHT_THEME: DefaultTheme = {
 };
 
 export enum THEMES_TYPES {
-  DARK = 'DARK',
-  LIGHT = 'LIGHT'
+  dark = 'dark',
+  light = 'light'
 }
 
 export const THEMES: { [key in THEMES_TYPES]: DefaultTheme } = {
-  [THEMES_TYPES.DARK]: DARK_THEME,
-  [THEMES_TYPES.LIGHT]: LIGHT_THEME
+  [THEMES_TYPES.dark]: DARK_THEME,
+  [THEMES_TYPES.light]: LIGHT_THEME
 };

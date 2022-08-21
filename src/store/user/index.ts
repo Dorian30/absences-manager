@@ -7,7 +7,7 @@ export interface IUserState {
 }
 
 export const initialState: IUserState = {
-  theme: THEMES_TYPES.DARK
+  theme: THEMES_TYPES.dark
 };
 
 export const userSlice = createSlice({
@@ -19,9 +19,9 @@ export const userSlice = createSlice({
        * doesn't actually mutate the state because it uses the Immer library.
        */
       state.theme =
-        state.theme === THEMES_TYPES.LIGHT
-          ? THEMES_TYPES.DARK
-          : THEMES_TYPES.LIGHT;
+        state.theme === THEMES_TYPES.light
+          ? THEMES_TYPES.dark
+          : THEMES_TYPES.light;
     }
   }
 });

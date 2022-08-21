@@ -1,8 +1,9 @@
-import { render } from '@testing-library/react';
-
 import { Dashboard } from 'src/screens';
+import { renderWithProviders } from 'src/utils';
 
 describe('Dashboard', () => {
-  const { container } = render(<Dashboard />);
-  expect(container).toBeInTheDocument();
+  it('renders', () => {
+    const { container } = renderWithProviders(<Dashboard />);
+    expect(container).toBeInTheDocument();
+  });
 });

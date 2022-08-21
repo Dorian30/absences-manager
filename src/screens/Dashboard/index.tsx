@@ -1,3 +1,9 @@
+import { Navbar } from 'src/components';
+
 export function Dashboard() {
-  return <div>Absences</div>;
+  return (
+    <>
+      <Navbar />
+    </>
+  );
 }
