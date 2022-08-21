@@ -1,8 +1,8 @@
 module.exports = {
-  'src/**/*.{js,jsx,ts,tsx}': [
-    () => 'npm run typecheck',
-    'npm run lint',
-    'npm run test:lint',
-    'npm run prettier'
+  '*.{js,jsx,ts,tsx}': [
+    () => 'npm run typecheck:staged',
+    'npm run lint:staged',
+    'npm run test:staged',
+    'npm run prettier:staged'
   ]
 };
