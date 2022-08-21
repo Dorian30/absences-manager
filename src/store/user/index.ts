@@ -18,7 +18,6 @@ export const userSlice = createSlice({
       /* RTK allows us to write "mutating" logic in reducers. It
        * doesn't actually mutate the state because it uses the Immer library.
        */
-      console.log({ state });
       state.theme =
         state.theme === THEMES_TYPES.LIGHT
           ? THEMES_TYPES.DARK
