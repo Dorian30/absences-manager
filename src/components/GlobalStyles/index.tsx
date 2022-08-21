@@ -1,11 +1,39 @@
 import { createGlobalStyle } from 'styled-components';
 
+import regularFontPath from 'src/assets/fonts/SourceSansPro-Regular.ttf';
+import semiBoldFontPath from 'src/assets/fonts/SourceSansPro-SemiBold.ttf';
+import boldFontPath from 'src/assets/fonts/SourceSansPro-Bold.ttf';
+
 export const GlobalStyles = createGlobalStyle`
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+  @font-face {
+    font-family: 'Source Sans Pro';
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+    src: url(${regularFontPath}) format('truetype');
   }
+
+  @font-face {
+    font-family: 'Source Sans Pro';
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+    src: url(${semiBoldFontPath}) format('truetype');
+  }
+
+  @font-face {
+    font-family: 'Source Sans Pro';
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+    src: url(${boldFontPath}) format('truetype');
+  }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
   *:focus {
     outline: none;
