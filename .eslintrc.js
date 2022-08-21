@@ -7,7 +7,9 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:react/recommended',
-    'plugin:@typescript-eslint/recommended'
+    'plugin:@typescript-eslint/recommended',
+    'plugin:jest-dom/recommended',
+    'plugin:testing-library/react'
   ],
   overrides: [],
   parser: '@typescript-eslint/parser',
@@ -15,7 +17,14 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module'
   },
-  plugins: ['react', 'react-hooks', 'import', '@typescript-eslint'],
+  plugins: [
+    'react',
+    'react-hooks',
+    'import',
+    '@typescript-eslint',
+    'testing-library',
+    'jest-dom'
+  ],
   settings: {
     react: {
       version: 'detect'
@@ -44,6 +53,18 @@ module.exports = {
         ],
         'newlines-between': 'always'
       }
-    ]
+    ],
+
+    // React Testing Rules
+    'testing-library/await-async-query': 'error',
+    'testing-library/no-await-sync-query': 'error',
+    'testing-library/no-debugging-utils': 'warn',
+    'testing-library/no-dom-import': 'off',
+
+    // Jest Rules
+    'jest-dom/prefer-checked': 'error',
+    'jest-dom/prefer-enabled-disabled': 'error',
+    'jest-dom/prefer-required': 'error',
+    'jest-dom/prefer-to-have-attribute': 'error'
   }
 };
