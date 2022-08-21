@@ -21,6 +21,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "test:lint": "react-scripts --bail --watchAll=false --findRelatedTests --passWithNoTests",
     "eject": "react-scripts eject",
     "lint": "eslint src --max-warnings=0",
     "typecheck": "tsc -p tsconfig.json --noEmit",
