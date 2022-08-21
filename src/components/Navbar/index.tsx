@@ -28,15 +28,15 @@ export function Navbar({ className = '' }: INavbar) {
     <Container className={className}>
       <Row alignItems="center">
         <StyledLogo height="30px" width="80px" />
-        <StyledLogoTitle width="315px" height="38px" />
+        <StyledLogoTitle width="250px" />
       </Row>
       <NavTitle>Absences</NavTitle>
       <ThemeIconContainer aria-label="theme-switcher" onClick={handleOnSwitch}>
         <ThemeIcon
           role="img"
           aria-label={`${theme}-theme`}
-          height="25px"
-          width="25px"
+          height="28px"
+          width="28px"
         />
       </ThemeIconContainer>
     </Container>
@@ -53,6 +53,7 @@ const Container = styled.nav`
 `;
 
 const NavTitle = styled.h1`
+  font-size: 30px;
   color: ${p => p.theme.colors.onPrimary};
 
   @media ${p => p.theme.breakpoints.sm} {
