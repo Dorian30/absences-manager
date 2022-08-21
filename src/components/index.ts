@@ -1,3 +1,3 @@
 export * from './App';
-export * from './Box';
 export * from './GlobalStyles';
+export * from './Row';
