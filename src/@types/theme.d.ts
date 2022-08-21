@@ -5,6 +5,12 @@ import { TColor } from 'interfaces';
 
 declare module 'styled-components' {
   export interface DefaultTheme {
+    breakpoints: {
+      xl: string;
+      lg: string;
+      md: string;
+      sm: string;
+    };
     colors: {
       brand: TColor;
       grayscale: TColor;
