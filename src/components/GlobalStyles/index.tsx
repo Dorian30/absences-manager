@@ -44,7 +44,9 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   body {
+    background-color: ${p => p.theme.colors.background};
     display: flex;
+    font-family: 'Source Sans Pro', 'sans-serif';
     flex-direction: column;
     min-height: 100%;
     width: 100vw;
