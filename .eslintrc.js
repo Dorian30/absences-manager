@@ -19,7 +19,8 @@ module.exports = {
   settings: {
     react: {
       version: 'detect'
-    }
+    },
+    'import/internal-regex': '^src/'
   },
   rules: {
     // React rules
