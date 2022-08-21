@@ -5,12 +5,12 @@ import { Navbar } from 'src/components';
 import { renderWithProviders } from 'src/utils';
 
 describe('navbar', () => {
-  it('renders the navbar', () => {
+  it('renders', () => {
     const { container } = renderWithProviders(<Navbar />);
     expect(container).toBeInTheDocument();
   });
 
-  it('renders light theme first', async () => {
+  it('renders dark theme first', async () => {
     renderWithProviders(<Navbar />);
 
     expect(
