@@ -2,9 +2,6 @@
   "compilerOptions": {
     "target": "es5",
     "baseUrl": "./",
-    "paths": {
-      "@constants": ["constants"] // Avoid conflict with node constant types
-    },
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,

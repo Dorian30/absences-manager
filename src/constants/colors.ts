@@ -1,4 +1,4 @@
-import { TColor } from 'interfaces';
+import { TColor } from 'src/interfaces';
 
 export const BRAND: TColor = {
   500: '#A65900',
