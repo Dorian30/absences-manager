@@ -17,6 +17,7 @@ export const Button = styled.button`
   border-radius: 4px;
   height: 42px;
   width: 152px;
+  transition: background ease 0.3s;
 
   &:hover {
     background: ${p => p.theme.colors.brand[400]};

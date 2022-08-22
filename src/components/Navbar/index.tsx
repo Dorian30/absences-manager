@@ -48,13 +48,21 @@ const Container = styled.nav`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
   padding: 30px;
   width: 100%;
+
+  @media ${p => p.theme.breakpoints.sm} {
+    padding: 30px 52px;
+  }
 `;
 
 const NavTitle = styled.h1`
   font-size: 30px;
   color: ${p => p.theme.colors.onPrimary};
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 
   @media ${p => p.theme.breakpoints.sm} {
     display: none;
