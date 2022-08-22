@@ -1,18 +1,24 @@
 import { ThemeProvider } from 'styled-components';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
-import { DARK_THEME, ROUTES } from 'src/constants';
+import { ROUTES, THEMES } from 'src/constants';
 import { Dashboard } from 'src/screens';
+import { TRootState } from 'src/store';
 
 import { GlobalStyles } from '../GlobalStyles';
 
 export function App() {
+  const { theme } = useSelector((state: TRootState) => state.user);
+
   return (
-    <ThemeProvider theme={DARK_THEME}>
+    <ThemeProvider theme={THEMES[theme]}>
       <GlobalStyles />
       <BrowserRouter>
-        <Route path={ROUTES.DASHBOARD} element={<Dashboard />} />
-        <Route path="*" element={<Dashboard />} />
+        <Routes>
+          <Route path={ROUTES.DASHBOARD} element={<Dashboard />} />
+          <Route path="*" element={<Dashboard />} />
+        </Routes>
       </BrowserRouter>
     </ThemeProvider>
   );

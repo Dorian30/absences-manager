@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@reduxjs/toolkit": "^1.8.5",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
@@ -12,6 +13,7 @@
     "@types/react-dom": "^18.0.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-redux": "^8.0.2",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
     "styled-components": "^5.3.5",
@@ -21,14 +23,17 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "test:lint": "react-scripts --bail --watchAll=false --findRelatedTests --passWithNoTests",
     "eject": "react-scripts eject",
+    "test": "react-scripts test",
+    "test:staged": "react-scripts test --findRelatedTests --bail --watchAll=false --passWithNoTests",
     "lint": "eslint src --max-warnings=0",
-    "lint-staged": "lint-staged --config lint-staged.config.js",
+    "lint:staged": "eslint --max-warnings=0",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "prettier": "prettier --write",
-    "prepare": "husky install"
+    "typecheck:staged": "tsc-files --noEmit",
+    "prettier": "prettier src --write",
+    "prettier:staged": "prettier --write",
+    "prepare": "husky install",
+    "lint-staged": "lint-staged --config lint-staged.config.js"
   },
   "eslintConfig": {
     "extends": [
@@ -54,10 +59,13 @@
     "@typescript-eslint/parser": "^5.33.1",
     "eslint": "^8.22.0",
     "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jest-dom": "^4.0.2",
     "eslint-plugin-react": "^7.30.1",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-testing-library": "^5.6.0",
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3",
-    "prettier": "^2.7.1"
+    "prettier": "^2.7.1",
+    "tsc-files": "^1.1.3"
   }
 }
