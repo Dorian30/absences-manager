@@ -55,7 +55,7 @@ export const LIGHT_THEME: DefaultTheme = {
     },
     onSurface: BLACK,
     background: GRAY,
-    onBackground: WHITE
+    onBackground: GRAYSCALE[500]
   }
 };
 
