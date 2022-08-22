@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { TRootState } from 'src/store';
 import { switchTheme } from 'src/store/user';
-import { ReactComponent as Logo } from 'src/assets/logos/lg_logo.svg';
-import { ReactComponent as LogoTitle } from 'src/assets/logos/lg_logo-title.svg';
+import { ReactComponent as BrandLogo } from 'src/assets/logos/lg_brand-logo.svg';
+import { ReactComponent as BrandLogoTitle } from 'src/assets/logos/lg_brand-logo-title.svg';
 import { ReactComponent as DarkThemeIcon } from 'src/assets/icons/ic_moon.svg';
 import { ReactComponent as LightThemeIcon } from 'src/assets/icons/ic_sun.svg';
 import { THEMES_TYPES } from 'src/constants';
@@ -49,7 +49,7 @@ const Container = styled.nav`
   align-items: center;
   justify-content: space-between;
   position: relative;
-  padding: 30px;
+  padding: 25px;
   width: 100%;
 
   @media ${p => p.theme.breakpoints.sm} {
@@ -69,11 +69,11 @@ const NavTitle = styled.h1`
   }
 `;
 
-const StyledLogo = styled(Logo)`
+const StyledLogo = styled(BrandLogo)`
   margin-right: 10px;
 `;
 
-const StyledLogoTitle = styled(LogoTitle)`
+const StyledLogoTitle = styled(BrandLogoTitle)`
   display: none;
 
   @media ${p => p.theme.breakpoints.sm} {

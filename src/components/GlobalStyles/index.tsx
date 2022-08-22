@@ -33,6 +33,7 @@ export const GlobalStyles = createGlobalStyle`
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    transition: background ease 0.3s;
   }
 
   *:focus {
@@ -50,6 +51,10 @@ export const GlobalStyles = createGlobalStyle`
     flex-direction: column;
     min-height: 100%;
     width: 100vw;
+  }
+
+  h1, h2, h3, h4, h5, h6, p, span {
+    transition: color ease 0.3s;
   }
 
 
