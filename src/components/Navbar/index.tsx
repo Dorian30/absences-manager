@@ -20,7 +20,7 @@ export function Navbar({ className = '' }: INavbar) {
   const dispatch = useDispatch();
 
   const ThemeIcon =
-    theme === THEMES_TYPES.dark ? DarkThemeIcon : LightThemeIcon;
+    theme === THEMES_TYPES.dark ? LightThemeIcon : DarkThemeIcon;
 
   const handleOnSwitch = () => dispatch(switchTheme());
 

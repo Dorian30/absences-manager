@@ -1,6 +1,14 @@
 import { DefaultTheme } from 'styled-components';
 
-import { BRAND, GRAYSCALE, WARNING, SUCCESS, WHITE, BLACK } from './colors';
+import {
+  BRAND,
+  GRAYSCALE,
+  WARNING,
+  SUCCESS,
+  WHITE,
+  BLACK,
+  GRAY
+} from './colors';
 import { BREAKPOINTS } from './breakpoints';
 
 export const DARK_THEME: DefaultTheme = {
@@ -46,7 +54,7 @@ export const LIGHT_THEME: DefaultTheme = {
       variant1: GRAYSCALE[100]
     },
     onSurface: BLACK,
-    background: BLACK,
+    background: GRAY,
     onBackground: WHITE
   }
 };

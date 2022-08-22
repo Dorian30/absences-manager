@@ -29,11 +29,11 @@ export const GlobalStyles = createGlobalStyle`
     src: url(${boldFontPath}) format('truetype');
   }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
 
   *:focus {
     outline: none;

@@ -34,4 +34,6 @@ export const SUCCESS: TColor = {
 
 export const WHITE = '#FFF';
 
+export const GRAY = '#F5F5F5';
+
 export const BLACK = '#1D1D1F';
