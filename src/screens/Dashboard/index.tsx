@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 
-import { Button, Navbar } from 'src/components';
-import { ReactComponent as Logo } from 'src/assets/logos/lg_logo.svg';
+import { Button, Navbar, Pagination } from 'src/components';
+import { ReactComponent as BrandLogo } from 'src/assets/logos/lg_brand-logo.svg';
+import { THEMES_TYPES } from 'src/constants';
 
 export function Dashboard() {
   return (
@@ -10,7 +11,7 @@ export function Dashboard() {
       <Content>
         <ContentHeader>
           <TitleContainer>
-            <Logo height="30px" width="80px" />
+            <StyledBrandLogo height="30px" width="80px" />
             <Title>Absences</Title>
           </TitleContainer>
           <Button>Generate iCal</Button>
@@ -25,10 +26,17 @@ export function Dashboard() {
             </TableRow>
           </TableHead>
         </Table>
+        <Pagination totalRecords={100} />
       </Content>
     </>
   );
 }
+
+const StyledBrandLogo = styled(BrandLogo)<{ theme: THEMES_TYPES }>`
+  path {
+    fill: ${p => p.theme.colors.onBackground};
+  }
+`;
 
 const Content = styled.main`
   position: relative;
@@ -74,6 +82,7 @@ const Title = styled.h1`
 const Table = styled.table`
   border-spacing: 0;
   color: ${p => p.theme.colors.onSurface};
+  margin-bottom: 75px;
   text-align: left;
   width: 100%;
 `;

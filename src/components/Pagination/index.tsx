@@ -67,12 +67,13 @@ export function Pagination({
 const Container = styled.section`
   display: flex;
   flex-direction: column;
+  align-items: center;
 `;
 
 const List = styled.ul`
   display: flex;
   gap: 10px;
-  margin-bottom: 12px;
+  margin-bottom: 18px;
 `;
 
 const Page = styled.button<{ active?: boolean }>`
@@ -97,6 +98,7 @@ const Page = styled.button<{ active?: boolean }>`
 `;
 
 const Text = styled.span`
+  color: ${p => p.theme.colors.onBackground};
   font-size: 20px;
   font-weight: 700;
 `;
