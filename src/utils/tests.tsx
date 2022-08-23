@@ -12,7 +12,7 @@ export interface IExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
   store?: TAppStore;
 }
 
-const DEFAULT_STATE: TRootState = {
+const DEFAULT_STATE: Partial<TRootState> = {
   user: {
     theme: THEMES_TYPES.dark
   }
