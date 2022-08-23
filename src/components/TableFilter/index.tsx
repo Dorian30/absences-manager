@@ -53,9 +53,13 @@ function Header({
 }
 
 function Menu({ className = '', children }: IBaseProps) {
-  const { isActive } = useFilterContext();
+  const { isActive, setIsActive } = useFilterContext();
 
-  return isActive ? <div className={className}>{children}</div> : null;
+  return isActive ? (
+    <div className={className} onMouseLeave={() => setIsActive(false)}>
+      {children}
+    </div>
+  ) : null;
 }
 
 TableFilter.Header = Header;
