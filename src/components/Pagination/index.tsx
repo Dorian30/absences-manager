@@ -6,7 +6,7 @@ export * from './hooks';
 
 export interface IPagination {
   className?: string;
-  onPageChange?: (pageNumber?: number) => void;
+  onPageChange?: (pageNumber: number) => void;
   pageLimit?: number;
   totalRecords: number | undefined;
 }
@@ -22,7 +22,7 @@ export function Pagination({
     { pageLimit, onPageChange }
   );
 
-  if (!totalRecords) return null;
+  if (!totalRecords || pages.length === 1) return null;
 
   return (
     <Container className={className}>
