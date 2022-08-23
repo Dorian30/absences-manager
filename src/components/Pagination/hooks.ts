@@ -7,7 +7,7 @@ import { range } from 'src/utils';
 
 export interface IUsePaginationOptions {
   pageLimit?: number;
-  onPageChange?: (pageNumber?: number) => void;
+  onPageChange?: (pageNumber: number) => void;
   pageNeighbours?: number;
 }
 
@@ -77,7 +77,7 @@ export function usePagination(
 
   const handleOnPageChange = useCallback(
     (page: number) => {
-      onPageChange?.();
+      onPageChange?.(page);
       setCurrentPage(page);
     },
     [onPageChange]

@@ -1,10 +1,16 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 
 import { Button, Navbar, Pagination } from 'src/components';
 import { ReactComponent as BrandLogo } from 'src/assets/logos/lg_brand-logo.svg';
 import { THEMES_TYPES } from 'src/constants';
+import { useGetAbsencesQuery } from 'src/services/absences';
 
 export function Dashboard() {
+  const [currentPage, setCurrentPage] = useState(1);
+  const { data } = useGetAbsencesQuery(currentPage);
+  const { absences, totalRecords } = data || {};
+
   return (
     <>
       <Navbar />
@@ -21,12 +27,31 @@ export function Dashboard() {
             <TableRow>
               <TableHeadCell>Name</TableHeadCell>
               <TableHeadCell>Type</TableHeadCell>
-              <TableHeadCell>Period</TableHeadCell>
               <TableHeadCell>Status</TableHeadCell>
+              <TableHeadCell>Period</TableHeadCell>
+              <TableHeadCell>Admitter Note</TableHeadCell>
+              <TableHeadCell>Member Note</TableHeadCell>
             </TableRow>
           </TableHead>
+          <tbody>
+            {absences?.map(
+              ({ id, name, type, status, period, admitterId, memberNote }) => (
+                <TableRow key={id}>
+                  <TableCell>{name}</TableCell>
+                  <TableCell>{type}</TableCell>
+                  <TableCell>{status}</TableCell>
+                  <TableCell>{period}</TableCell>
+                  <TableCell>{admitterId || '-'}</TableCell>
+                  <TableCell>{memberNote || '-'}</TableCell>
+                </TableRow>
+              )
+            )}
+          </tbody>
         </Table>
-        <Pagination totalRecords={100} />
+        <Pagination
+          totalRecords={totalRecords}
+          onPageChange={page => setCurrentPage(page)}
+        />
       </Content>
     </>
   );
@@ -90,7 +115,7 @@ const Table = styled.table`
 const TableRow = styled.tr`
   height: 56px;
 
-  &:nth-child(odd) {
+  &:nth-child(even) {
     background: ${p => p.theme.colors.surface.variant1};
   }
 `;
@@ -101,6 +126,11 @@ const TableHead = styled.thead`
 `;
 
 const TableHeadCell = styled.th`
-  width: 25%;
+  width: 16.66%;
+  padding: 0 25px;
+`;
+
+const TableCell = styled.td`
+  width: 16.66%;
   padding: 0 25px;
 `;
