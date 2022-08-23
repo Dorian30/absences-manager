@@ -3,12 +3,13 @@ import styled from 'styled-components';
 
 import { Button, Navbar, Pagination } from 'src/components';
 import { ReactComponent as BrandLogo } from 'src/assets/logos/lg_brand-logo.svg';
+import { ReactComponent as Loader } from 'src/assets/loader.svg';
 import { THEMES_TYPES } from 'src/constants';
 import { useGetAbsencesQuery } from 'src/services/absences';
 
 export function Dashboard() {
   const [currentPage, setCurrentPage] = useState(1);
-  const { data } = useGetAbsencesQuery(currentPage);
+  const { data, isFetching } = useGetAbsencesQuery(currentPage);
   const { absences, totalRecords } = data || {};
 
   return (
@@ -22,7 +23,7 @@ export function Dashboard() {
           </TitleContainer>
           <Button>Generate iCal</Button>
         </ContentHeader>
-        <Table>
+        <Table isFetching={isFetching}>
           <TableHead>
             <TableRow>
               <TableHeadCell>Name</TableHeadCell>
@@ -34,16 +35,30 @@ export function Dashboard() {
             </TableRow>
           </TableHead>
           <tbody>
-            {absences?.map(
-              ({ id, name, type, status, period, admitterId, memberNote }) => (
-                <TableRow key={id}>
-                  <TableCell>{name}</TableCell>
-                  <TableCell>{type}</TableCell>
-                  <TableCell>{status}</TableCell>
-                  <TableCell>{period}</TableCell>
-                  <TableCell>{admitterId || '-'}</TableCell>
-                  <TableCell>{memberNote || '-'}</TableCell>
-                </TableRow>
+            {isFetching ? (
+              <LoaderContainer>
+                <StyledLoader width="80" height="85" />
+              </LoaderContainer>
+            ) : (
+              absences?.map(
+                ({
+                  id,
+                  name,
+                  type,
+                  status,
+                  period,
+                  admitterId,
+                  memberNote
+                }) => (
+                  <TableRow key={id}>
+                    <TableCell>{name}</TableCell>
+                    <TableCell>{type}</TableCell>
+                    <TableCell>{status}</TableCell>
+                    <TableCell>{period}</TableCell>
+                    <TableCell>{admitterId || '-'}</TableCell>
+                    <TableCell>{memberNote || '-'}</TableCell>
+                  </TableRow>
+                )
               )
             )}
           </tbody>
@@ -61,6 +76,19 @@ const StyledBrandLogo = styled(BrandLogo)<{ theme: THEMES_TYPES }>`
   path {
     fill: ${p => p.theme.colors.onBackground};
   }
+`;
+
+const LoaderContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 300px;
+  position: absolute;
+`;
+
+const StyledLoader = styled(Loader)`
+  color: ${p => p.theme.colors.primary.default};
 `;
 
 const Content = styled.main`
@@ -104,10 +132,12 @@ const Title = styled.h1`
   margin-left: 15px;
 `;
 
-const Table = styled.table`
+const Table = styled.table<{ isFetching: boolean }>`
   border-spacing: 0;
   color: ${p => p.theme.colors.onSurface};
-  margin-bottom: 75px;
+  position: relative;
+  margin-bottom: ${p => (p.isFetching ? 300 : 75)}px;
+
   text-align: left;
   width: 100%;
 `;
