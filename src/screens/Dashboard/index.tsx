@@ -6,22 +6,31 @@ import { ReactComponent as BrandLogo } from 'src/assets/logos/lg_brand-logo.svg'
 import { ReactComponent as Loader } from 'src/assets/loader.svg';
 import { ReactComponent as FilterIcon } from 'src/assets/icons/ic_filter.svg';
 import { THEMES_TYPES } from 'src/constants';
-import { useGetAbsencesQuery } from 'src/services';
+import { useGetAbsencesQuery, IGetAbsencesParams } from 'src/services';
 import { isEmpty } from 'src/utils';
 
 export function Dashboard() {
   const [currentPage, setCurrentPage] = useState(1);
-  const [type, setType] = useState<'vacation' | 'sickness' | 'all'>('all');
-  const [period, setPeriod] = useState<'all' | { from: Date; to: Date }>('all');
+  const [type, setType] = useState<IGetAbsencesParams['type']>('all');
+  const [period, setPeriod] = useState<IGetAbsencesParams['period']>('all');
+  const [skip, setSkip] = useState(false);
 
   const { data, isFetching, isSuccess, isError, refetch } = useGetAbsencesQuery(
     {
       page: currentPage,
       type,
       period
-    }
+    },
+    { skip }
   );
   const { absences, totalRecords } = data || {};
+
+  const handleOnType = (type: IGetAbsencesParams['type']) => () => {
+    setSkip(true);
+    setType(type);
+    setCurrentPage(1);
+    setSkip(false);
+  };
 
   return (
     <>
@@ -57,21 +66,21 @@ export function Dashboard() {
                         <span>Show All</span>
                         <FilterCheckbox
                           checked={type === 'all'}
-                          onClick={() => setType('all')}
+                          onClick={handleOnType('all')}
                         />
                       </Row>
                       <Row justifyContent="space-between" alignItems="center">
                         <span>Sickness</span>
                         <FilterCheckbox
                           checked={type === 'sickness'}
-                          onClick={() => setType('sickness')}
+                          onClick={handleOnType('sickness')}
                         />
                       </Row>
                       <Row justifyContent="space-between" alignItems="center">
                         <span>Vacation</span>
                         <FilterCheckbox
                           checked={type === 'vacation'}
-                          onClick={() => setType('vacation')}
+                          onClick={handleOnType('vacation')}
                         />
                       </Row>
                     </FilterMenu>
@@ -111,26 +120,16 @@ export function Dashboard() {
           </TableHead>
           <tbody>
             {!isFetching &&
-              absences?.map(
-                ({
-                  id,
-                  name,
-                  type,
-                  status,
-                  period,
-                  admitterId,
-                  memberNote
-                }) => (
-                  <TableRow key={id}>
-                    <TableCell>{name}</TableCell>
-                    <TableCell>{type}</TableCell>
-                    <TableCell>{status}</TableCell>
-                    <TableCell>{period}</TableCell>
-                    <TableCell>{admitterId || '-'}</TableCell>
-                    <TableCell>{memberNote || '-'}</TableCell>
-                  </TableRow>
-                )
-              )}
+              absences?.map(item => (
+                <TableRow key={`${item.id}-${type}-${JSON.stringify(period)}`}>
+                  <TableCell>{item.name}</TableCell>
+                  <TableCell>{item.type}</TableCell>
+                  <TableCell>{item.status}</TableCell>
+                  <TableCell>{item.period}</TableCell>
+                  <TableCell>{item.admitterId || '-'}</TableCell>
+                  <TableCell>{item.memberNote || '-'}</TableCell>
+                </TableRow>
+              ))}
           </tbody>
         </Table>
         {isFetching && (
@@ -138,12 +137,12 @@ export function Dashboard() {
             <StyledLoader width="80" height="85" />
           </StateContainer>
         )}
-        {isSuccess && isEmpty(absences) && (
+        {!isFetching && isSuccess && isEmpty(absences) && (
           <StateContainer>
             <StateMsg>There are no absences entries to display</StateMsg>
           </StateContainer>
         )}
-        {isError && (
+        {!isFetching && isError && (
           <StateContainer>
             <StateMsg>There was an error with your request</StateMsg>
             <Button onClick={() => refetch()}>Try again</Button>
@@ -240,7 +239,7 @@ const TableCell = styled.td`
   padding: 0 25px;
 `;
 
-const StyledFilterIcon = styled(FilterIcon)<{ $isActive: boolean }>`
+const StyledFilterIcon = styled(FilterIcon)<{ $isActive?: boolean }>`
   margin-left: 10px;
   color: ${p =>
     p.$isActive
