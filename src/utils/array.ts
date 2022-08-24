@@ -5,3 +5,5 @@ export const range = (from: number, to: number) => {
   }
   return arr;
 };
+
+export const isEmpty = <T>(arr: Array<T> | undefined) => !arr?.length;

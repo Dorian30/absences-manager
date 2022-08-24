@@ -6,14 +6,21 @@ import { ReactComponent as BrandLogo } from 'src/assets/logos/lg_brand-logo.svg'
 import { ReactComponent as Loader } from 'src/assets/loader.svg';
 import { ReactComponent as FilterIcon } from 'src/assets/icons/ic_filter.svg';
 import { THEMES_TYPES } from 'src/constants';
-import { useGetAbsencesQuery } from 'src/services/absences';
+import { useGetAbsencesQuery } from 'src/services';
+import { isEmpty } from 'src/utils';
 
 export function Dashboard() {
   const [currentPage, setCurrentPage] = useState(1);
   const [type, setType] = useState<'vacation' | 'sickness' | 'all'>('all');
-  const [period, setPeriod] = useState<'all' | 'monthly' | 'yearly'>('all');
+  const [period, setPeriod] = useState<'all' | { from: Date; to: Date }>('all');
 
-  const { data, isFetching } = useGetAbsencesQuery(currentPage);
+  const { data, isFetching, isSuccess, isError, refetch } = useGetAbsencesQuery(
+    {
+      page: currentPage,
+      type,
+      period
+    }
+  );
   const { absences, totalRecords } = data || {};
 
   return (
@@ -27,7 +34,7 @@ export function Dashboard() {
           </TitleContainer>
           <Button>Generate iCal</Button>
         </ContentHeader>
-        <Table isFetching={isFetching}>
+        <Table>
           <TableHead>
             <TableRow>
               <TableHeadCell>Name</TableHeadCell>
@@ -94,20 +101,6 @@ export function Dashboard() {
                           onClick={() => setPeriod('all')}
                         />
                       </Row>
-                      <Row justifyContent="space-between" alignItems="center">
-                        <span>Monthly</span>
-                        <FilterCheckbox
-                          checked={period === 'monthly'}
-                          onClick={() => setPeriod('monthly')}
-                        />
-                      </Row>
-                      <Row justifyContent="space-between" alignItems="center">
-                        <span>Yearly</span>
-                        <FilterCheckbox
-                          checked={period === 'yearly'}
-                          onClick={() => setPeriod('yearly')}
-                        />
-                      </Row>
                     </FilterMenu>
                   </TableFilter.Menu>
                 </TableFilter>
@@ -116,13 +109,9 @@ export function Dashboard() {
               <TableHeadCell>Member Note</TableHeadCell>
             </TableRow>
           </TableHead>
-          {isFetching ? (
-            <LoaderContainer>
-              <StyledLoader width="80" height="85" />
-            </LoaderContainer>
-          ) : (
-            <tbody>
-              {absences?.map(
+          <tbody>
+            {!isFetching &&
+              absences?.map(
                 ({
                   id,
                   name,
@@ -142,9 +131,24 @@ export function Dashboard() {
                   </TableRow>
                 )
               )}
-            </tbody>
-          )}
+          </tbody>
         </Table>
+        {isFetching && (
+          <StateContainer>
+            <StyledLoader width="80" height="85" />
+          </StateContainer>
+        )}
+        {isSuccess && isEmpty(absences) && (
+          <StateContainer>
+            <StateMsg>There are no absences entries to display</StateMsg>
+          </StateContainer>
+        )}
+        {isError && (
+          <StateContainer>
+            <StateMsg>There was an error with your request</StateMsg>
+            <Button onClick={() => refetch()}>Try again</Button>
+          </StateContainer>
+        )}
         <Pagination
           totalRecords={totalRecords}
           onPageChange={page => setCurrentPage(page)}
@@ -158,19 +162,6 @@ const StyledBrandLogo = styled(BrandLogo)<{ theme: THEMES_TYPES }>`
   path {
     fill: ${p => p.theme.colors.onBackground};
   }
-`;
-
-const LoaderContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 300px;
-  position: absolute;
-`;
-
-const StyledLoader = styled(Loader)`
-  color: ${p => p.theme.colors.primary.default};
 `;
 
 const Content = styled.main`
@@ -214,12 +205,12 @@ const Title = styled.h1`
   margin-left: 15px;
 `;
 
-const Table = styled.table<{ isFetching: boolean }>`
+const Table = styled.table`
   border-spacing: 0;
   border-collapse: collapse;
   color: ${p => p.theme.colors.onSurface};
   position: relative;
-  margin-bottom: ${p => (p.isFetching ? 300 : 75)}px;
+  margin-bottom: 75px;
 
   text-align: left;
   width: 100%;
@@ -282,4 +273,29 @@ const FilterCheckbox = styled.input.attrs({ type: 'checkbox' })`
   &:hover {
     cursor: pointer;
   }
+`;
+
+const StateContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 50px;
+  justify-content: center;
+  margin-bottom: 75px;
+  height: 300px;
+  width: 100%;
+`;
+
+const StyledLoader = styled(Loader)`
+  color: ${p => p.theme.colors.primary.default};
+`;
+
+const StateMsg = styled.p`
+  align-items: center;
+  color: ${p => p.theme.colors.onBackground};
+  display: flex;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: bold;
+  width: 100%;
 `;
