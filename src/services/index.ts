@@ -1,1 +1,1 @@
-export * from './absences';
+export * from './AbsencesService';

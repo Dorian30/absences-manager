@@ -1,10 +1,14 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { isWithinInterval } from 'date-fns';
 
 import absencesMock from 'src/mocks/absences.json';
 import membersMock from 'src/mocks/members.json';
 import { IAbsence, TAbsencesList } from 'src/models/IAbsences';
 import { IMember } from 'src/models/IMembers';
 import { formatDate } from 'src/utils/date';
+
+const absences = absencesMock.payload as Array<IAbsence>;
+const members = membersMock.payload as Array<IMember>;
 
 // Define a service using a base URL and expected endpoints
 export const absencesApi = createApi({
@@ -13,15 +17,26 @@ export const absencesApi = createApi({
   endpoints: builder => ({
     getAbsences: builder.query<
       { absences: TAbsencesList; totalRecords: number },
-      number
+      {
+        page: number;
+        type: 'sickness' | 'vacation' | 'all';
+        period: { from: Date; to: Date } | 'all';
+      }
     >({
       // Mocked API
-      queryFn: page => {
-        const absences = absencesMock.payload as Array<IAbsence>;
-        const members = membersMock.payload as Array<IMember>;
+      queryFn: ({ page, type, period }) => {
         const pageLimit = 10;
         const absencesList = absences
           .slice(pageLimit * (page - 1), pageLimit * page)
+          .filter(absence => (type === 'all' ? true : absence.type === type))
+          .filter(absence =>
+            period === 'all'
+              ? true
+              : isWithinInterval(new Date(absence.startDate), {
+                  start: new Date(period.from),
+                  end: new Date(period.to)
+                })
+          )
           .map(absence => {
             const startDate = new Date(absence.startDate);
             const endDate = new Date(absence.endDate);
