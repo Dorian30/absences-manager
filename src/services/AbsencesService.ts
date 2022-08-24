@@ -10,6 +10,12 @@ import { formatDate } from 'src/utils/date';
 const absences = absencesMock.payload as Array<IAbsence>;
 const members = membersMock.payload as Array<IMember>;
 
+export interface IGetAbsencesParams {
+  page: number;
+  type: 'sickness' | 'vacation' | 'all';
+  period: { from: Date; to: Date } | 'all';
+}
+
 // Define a service using a base URL and expected endpoints
 export const absencesApi = createApi({
   reducerPath: 'absencesApi',
@@ -17,17 +23,13 @@ export const absencesApi = createApi({
   endpoints: builder => ({
     getAbsences: builder.query<
       { absences: TAbsencesList; totalRecords: number },
-      {
-        page: number;
-        type: 'sickness' | 'vacation' | 'all';
-        period: { from: Date; to: Date } | 'all';
-      }
+      IGetAbsencesParams
     >({
       // Mocked API
       queryFn: ({ page, type, period }) => {
         const pageLimit = 10;
-        const absencesList = absences
-          .slice(pageLimit * (page - 1), pageLimit * page)
+
+        const filteredAbsences = absences
           .filter(absence => (type === 'all' ? true : absence.type === type))
           .filter(absence =>
             period === 'all'
@@ -36,7 +38,10 @@ export const absencesApi = createApi({
                   start: new Date(period.from),
                   end: new Date(period.to)
                 })
-          )
+          );
+
+        const absencesList = filteredAbsences
+          .slice(pageLimit * (page - 1), pageLimit * page)
           .map(absence => {
             const startDate = new Date(absence.startDate);
             const endDate = new Date(absence.endDate);
@@ -63,10 +68,10 @@ export const absencesApi = createApi({
               resolve({
                 data: {
                   absences: absencesList,
-                  totalRecords: absences.length
+                  totalRecords: filteredAbsences.length
                 }
               }),
-            5000
+            2000
           )
         );
       }
