@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ChangeEventHandler, useState } from 'react';
 import styled from 'styled-components';
 
 import { Button, Navbar, Pagination, Row, TableFilter } from 'src/components';
@@ -11,8 +11,8 @@ import { isEmpty } from 'src/utils';
 
 export function Dashboard() {
   const [currentPage, setCurrentPage] = useState(1);
-  const [type, setType] = useState<IGetAbsencesParams['type']>('all');
-  const [period, setPeriod] = useState<IGetAbsencesParams['period']>('all');
+  const [type, setType] = useState<IGetAbsencesParams['type']>(null);
+  const [period, setPeriod] = useState<IGetAbsencesParams['period']>(null);
   const [skip, setSkip] = useState(false);
 
   const { data, isFetching, isSuccess, isError, refetch } = useGetAbsencesQuery(
@@ -31,6 +31,25 @@ export function Dashboard() {
     setCurrentPage(1);
     setSkip(false);
   };
+
+  const handleOnPeriodAll = () => {
+    setSkip(true);
+    setPeriod(null);
+    setCurrentPage(1);
+    setSkip(false);
+  };
+
+  const handleOnPeriod =
+    (date: 'from' | 'to'): ChangeEventHandler<HTMLInputElement> =>
+    ({ currentTarget: { value } }) => {
+      setSkip(true);
+      setPeriod(prevState => ({
+        ...(typeof prevState === 'object' ? prevState : {}),
+        [date]: value
+      }));
+      setCurrentPage(1);
+      setSkip(false);
+    };
 
   return (
     <>
@@ -63,24 +82,30 @@ export function Dashboard() {
                   <TableFilter.Menu>
                     <FilterMenu>
                       <Row justifyContent="space-between" alignItems="center">
-                        <span>Show All</span>
+                        <label htmlFor="all">Show All</label>
                         <FilterCheckbox
-                          checked={type === 'all'}
-                          onClick={handleOnType('all')}
+                          id="all"
+                          name="type"
+                          checked={!type}
+                          onChange={handleOnType(null)}
                         />
                       </Row>
                       <Row justifyContent="space-between" alignItems="center">
-                        <span>Sickness</span>
+                        <label htmlFor="sickness">Sickness</label>
                         <FilterCheckbox
+                          id="sickness"
+                          name="type"
                           checked={type === 'sickness'}
-                          onClick={handleOnType('sickness')}
+                          onChange={handleOnType('sickness')}
                         />
                       </Row>
                       <Row justifyContent="space-between" alignItems="center">
-                        <span>Vacation</span>
+                        <label htmlFor="vacation">Vacation</label>
                         <FilterCheckbox
+                          id="vacation"
+                          name="type"
                           checked={type === 'vacation'}
-                          onClick={handleOnType('vacation')}
+                          onChange={handleOnType('vacation')}
                         />
                       </Row>
                     </FilterMenu>
@@ -104,10 +129,27 @@ export function Dashboard() {
                   <TableFilter.Menu>
                     <FilterMenu>
                       <Row justifyContent="space-between" alignItems="center">
-                        <span>Show All</span>
+                        <label htmlFor="all">Show All</label>
                         <FilterCheckbox
-                          checked={period === 'all'}
-                          onClick={() => setPeriod('all')}
+                          id="all"
+                          name="period"
+                          checked={!period}
+                          onClick={handleOnPeriodAll}
+                        />
+                      </Row>
+                      <label>Date Range:</label>
+                      <Row justifyContent="space-between" alignItems="center">
+                        <DateRangeInput
+                          name="period.from"
+                          onChange={handleOnPeriod('from')}
+                          value={period?.from || ''}
+                          placeholder="From"
+                        />
+                        <DateRangeInput
+                          name="period.to"
+                          onChange={handleOnPeriod('to')}
+                          value={period?.to || ''}
+                          placeholder="To"
                         />
                       </Row>
                     </FilterMenu>
@@ -272,6 +314,12 @@ const FilterCheckbox = styled.input.attrs({ type: 'checkbox' })`
   &:hover {
     cursor: pointer;
   }
+`;
+
+const DateRangeInput = styled.input.attrs({ type: 'date' })`
+  width: 120px;
+  height: 25px;
+  padding: 5px;
 `;
 
 const StateContainer = styled.div`

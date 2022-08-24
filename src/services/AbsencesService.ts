@@ -12,8 +12,8 @@ const members = membersMock.payload as Array<IMember>;
 
 export interface IGetAbsencesParams {
   page: number;
-  type: 'sickness' | 'vacation' | 'all';
-  period: { from: Date; to: Date } | 'all';
+  type: 'sickness' | 'vacation' | null;
+  period: { from?: string; to?: string } | null;
 }
 
 // Define a service using a base URL and expected endpoints
@@ -30,13 +30,13 @@ export const absencesApi = createApi({
         const pageLimit = 10;
 
         const filteredAbsences = absences
-          .filter(absence => (type === 'all' ? true : absence.type === type))
+          .filter(absence => (!type ? true : absence.type === type))
           .filter(absence =>
-            period === 'all'
+            !period
               ? true
               : isWithinInterval(new Date(absence.startDate), {
-                  start: new Date(period.from),
-                  end: new Date(period.to)
+                  start: new Date(period.from || 0),
+                  end: period.to ? new Date(period.to) : new Date()
                 })
           );
 
