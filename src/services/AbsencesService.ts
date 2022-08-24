@@ -1,10 +1,20 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { isWithinInterval } from 'date-fns';
 
 import absencesMock from 'src/mocks/absences.json';
 import membersMock from 'src/mocks/members.json';
 import { IAbsence, TAbsencesList } from 'src/models/IAbsences';
 import { IMember } from 'src/models/IMembers';
 import { formatDate } from 'src/utils/date';
+
+const absences = absencesMock.payload as Array<IAbsence>;
+const members = membersMock.payload as Array<IMember>;
+
+export interface IGetAbsencesParams {
+  page: number;
+  type: 'sickness' | 'vacation' | null;
+  period: { from?: string; to?: string } | null;
+}
 
 // Define a service using a base URL and expected endpoints
 export const absencesApi = createApi({
@@ -13,14 +23,24 @@ export const absencesApi = createApi({
   endpoints: builder => ({
     getAbsences: builder.query<
       { absences: TAbsencesList; totalRecords: number },
-      number
+      IGetAbsencesParams
     >({
       // Mocked API
-      queryFn: page => {
-        const absences = absencesMock.payload as Array<IAbsence>;
-        const members = membersMock.payload as Array<IMember>;
+      queryFn: ({ page, type, period }) => {
         const pageLimit = 10;
-        const absencesList = absences
+
+        const filteredAbsences = absences
+          .filter(absence => (!type ? true : absence.type === type))
+          .filter(absence =>
+            !period
+              ? true
+              : isWithinInterval(new Date(absence.startDate), {
+                  start: new Date(period.from || 0),
+                  end: period.to ? new Date(period.to) : new Date()
+                })
+          );
+
+        const absencesList = filteredAbsences
           .slice(pageLimit * (page - 1), pageLimit * page)
           .map(absence => {
             const startDate = new Date(absence.startDate);
@@ -48,10 +68,10 @@ export const absencesApi = createApi({
               resolve({
                 data: {
                   absences: absencesList,
-                  totalRecords: absences.length
+                  totalRecords: filteredAbsences.length
                 }
               }),
-            5000
+            2000
           )
         );
       }
