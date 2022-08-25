@@ -38,6 +38,7 @@ module.exports = {
     'react/react-in-jsx-scope': 'off', // Checks react is within scope
 
     // Import Rules
+    'import/no-cycle': 2,
     'import/order': [
       'error',
       {
