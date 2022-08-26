@@ -3,10 +3,14 @@ import styled from 'styled-components';
 
 import { Button, Navbar, Pagination, Row, TableFilter } from 'src/components';
 import { ReactComponent as BrandLogo } from 'src/assets/logos/lg_brand-logo.svg';
-import { ReactComponent as Loader } from 'src/assets/loader.svg';
+import { ReactComponent as Loader } from 'src/assets/loaders/ld_bars.svg';
 import { ReactComponent as FilterIcon } from 'src/assets/icons/ic_filter.svg';
 import { THEMES_TYPES } from 'src/constants';
-import { useGetAbsencesQuery, IGetAbsencesParams } from 'src/services';
+import {
+  useGetAbsencesQuery,
+  IGetAbsencesParams,
+  useLazyGetICalendarQuery
+} from 'src/services';
 import { isEmpty } from 'src/utils';
 
 export function Dashboard() {
@@ -51,6 +55,18 @@ export function Dashboard() {
       setSkip(false);
     };
 
+  const [getICalendar, iCalQuery] = useLazyGetICalendarQuery();
+
+  const handleOnGenerateIcal = async () => {
+    try {
+      const { data: iCal } = await getICalendar({ type, period });
+      if (!iCal) throw new Error();
+      window.open(encodeURI('data:text/calendar;charset=utf8,' + iCal));
+    } catch (e) {
+      console.log('toast');
+    }
+  };
+
   return (
     <>
       <Navbar />
@@ -60,7 +76,9 @@ export function Dashboard() {
             <StyledBrandLogo height="30px" width="80px" />
             <Title>Absences</Title>
           </TitleContainer>
-          <Button>Generate iCal</Button>
+          <Button loading={iCalQuery.isFetching} onClick={handleOnGenerateIcal}>
+            Generate iCal
+          </Button>
         </ContentHeader>
         <Table>
           <TableHead>
