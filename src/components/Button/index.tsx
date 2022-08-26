@@ -1,12 +1,23 @@
-import { ReactNode } from 'react';
+import { ButtonHTMLAttributes, ReactNode } from 'react';
 import styled from 'styled-components';
 
-export interface IButton {
+import { ReactComponent as Spinner } from 'src/assets/loaders/ld_spinner.svg';
+
+export interface IButton extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string;
   children: ReactNode;
+  loading?: boolean;
 }
 
-export const Button = styled.button`
+export function Button({ children, loading, ...props }: IButton) {
+  return (
+    <Container disabled={loading} {...props}>
+      {loading ? <StyledSpinner /> : children}
+    </Container>
+  );
+}
+
+const Container = styled.button`
   background: ${p => p.theme.colors.primary.default};
   color: ${p => p.theme.colors.onPrimary};
   font-size: 16px;
@@ -25,5 +36,14 @@ export const Button = styled.button`
 
   &:disabled {
     background: ${p => p.theme.colors.grayscale[200]};
+
+    circle {
+      stroke: ${p => p.theme.colors.grayscale[500]};
+    }
   }
+`;
+
+const StyledSpinner = styled(Spinner)`
+  height: 20px;
+  width: 20px;
 `;

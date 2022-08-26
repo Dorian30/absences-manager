@@ -1,8 +1,10 @@
 import { areIntervalsOverlapping, format } from 'date-fns';
+import { v4 as uuidv4 } from 'uuid';
 
 import { IAbsence } from 'src/models/IAbsences';
 import { IMember } from 'src/models/IMembers';
 import { filterBy, mapBy } from 'src/utils/array';
+import { toICalDate } from 'src/utils/date';
 
 import { TAbsences } from '.';
 
@@ -48,3 +50,25 @@ export const mapMembersToAbsences = (members: Array<IMember>) =>
       period
     };
   });
+
+export const createICalEvents = mapBy<TAbsences[number], string>(absence =>
+  [
+    `BEGIN:VEVENT`,
+    `UID:${uuidv4()}`,
+    `DTSTAMP:${toICalDate(new Date())}`,
+    `DTSTART:${toICalDate(new Date(absence.startDate))}`,
+    `DTEND:${toICalDate(new Date(absence.endDate))}`,
+    `SUMMARY: ${absence.type} - ${absence.name}`,
+    `DESCRIPTION:${absence.memberNote}`,
+    'END:VEVENT'
+  ].join('\n')
+);
+
+export const createICal = (events: Array<string>) =>
+  [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:crewmeister/ics',
+    ...events,
+    'END:VCALENDAR'
+  ].join('\n');

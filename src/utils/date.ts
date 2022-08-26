@@ -1,2 +1,3 @@
-export const formatDate = (date: Date) =>
-  `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+import { format } from 'date-fns';
+
+export const toICalDate = (date: Date) => format(date, "yyyyMMdd'T'HHmmss");
