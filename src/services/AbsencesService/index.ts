@@ -11,7 +11,9 @@ import { TMerge } from 'src/interfaces';
 import {
   filterByDateInterval,
   filterByType,
-  mapMembersToAbsences
+  mapMembersToAbsences,
+  createICalEvents,
+  createICal
 } from './util';
 
 const absences = absencesMock.payload as Array<IAbsence>;
@@ -19,6 +21,11 @@ const members = membersMock.payload as Array<IMember>;
 
 export interface IGetAbsencesParams {
   page: number;
+  type: 'sickness' | 'vacation' | null;
+  period: { from?: string; to?: string } | null;
+}
+
+export interface ICreateCalendarParams {
   type: 'sickness' | 'vacation' | null;
   period: { from?: string; to?: string } | null;
 }
@@ -68,8 +75,30 @@ export const absencesApi = createApi({
             });
           }, 2000)
         )
+    }),
+    getICalendar: builder.query<string, ICreateCalendarParams>({
+      queryFn: ({ type, period }) =>
+        new Promise(resolve =>
+          setTimeout(() => {
+            const iCal = compose<string>(
+              createICal,
+              createICalEvents,
+              mapMembersToAbsences(members),
+              filterByDateInterval(period),
+              filterByType(type)
+            )(absences);
+
+            resolve({
+              data: iCal
+            });
+          }, 2000)
+        )
     })
   })
 });
 
-export const { useGetAbsencesQuery } = absencesApi;
+export const {
+  useGetAbsencesQuery,
+  useGetICalendarQuery,
+  useLazyGetICalendarQuery
+} = absencesApi;
