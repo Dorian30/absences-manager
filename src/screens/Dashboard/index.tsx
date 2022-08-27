@@ -63,7 +63,7 @@ export function Dashboard() {
       if (!iCal) throw new Error();
       window.open(encodeURI('data:text/calendar;charset=utf8,' + iCal));
     } catch (e) {
-      console.log('toast');
+      console.log(e);
     }
   };
 
@@ -91,6 +91,8 @@ export function Dashboard() {
                       <Row alignItems="center">
                         <span>Type</span>
                         <StyledFilterIcon
+                          role="img"
+                          aria-label="type"
                           $isActive={isActive}
                           onClick={() => setIsActive(!isActive)}
                         />
@@ -138,6 +140,8 @@ export function Dashboard() {
                       <Row alignItems="center">
                         <span>Period</span>
                         <StyledFilterIcon
+                          role="img"
+                          aria-label="period"
                           $isActive={isActive}
                           onClick={() => setIsActive(!isActive)}
                         />
@@ -194,7 +198,12 @@ export function Dashboard() {
         </Table>
         {isFetching && (
           <StateContainer>
-            <StyledLoader width="80" height="85" />
+            <StyledLoader
+              role="img"
+              aria-label="loader"
+              width="80"
+              height="85"
+            />
           </StateContainer>
         )}
         {!isFetching && isSuccess && isEmpty(absences) && (

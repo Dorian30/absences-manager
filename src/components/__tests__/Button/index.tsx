@@ -6,7 +6,7 @@ import { renderWithProviders } from 'src/utils';
 describe('button', () => {
   it('renders', () => {
     const { container } = renderWithProviders(<Button>text</Button>);
-    expect(container).toBeInTheDocument;
+    expect(container).toBeInTheDocument();
   });
 
   it('renders a enabled button', () => {

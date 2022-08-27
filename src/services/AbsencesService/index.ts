@@ -18,6 +18,7 @@ import {
 
 const absences = absencesMock.payload as Array<IAbsence>;
 const members = membersMock.payload as Array<IMember>;
+const delay = 1;
 
 export interface IGetAbsencesParams {
   page: number;
@@ -73,7 +74,7 @@ export const absencesApi = createApi({
                 totalRecords: filteredAbsences.length
               }
             });
-          }, 2000)
+          }, delay)
         )
     }),
     getICalendar: builder.query<string, ICreateCalendarParams>({
@@ -91,7 +92,7 @@ export const absencesApi = createApi({
             resolve({
               data: iCal
             });
-          }, 2000)
+          }, delay)
         )
     })
   })
