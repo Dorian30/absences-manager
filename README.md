@@ -2,6 +2,8 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). Read the readme for further instructions on running the project, project's conventions, tech stack, tech decisions.
 
+React was picked instead of Next because there was no need for SEO or SSR for this project.
+
 ## Summary
 
 - [Context](#Context)
@@ -111,7 +113,7 @@ Both unit and integration testing were implemented. As [Guillermo Rauch](https:/
 
 <img src="./tests.png" width="800"  title="testing">
 
-**Disclaimer:** Test time is due to the delay set for mocked api and endpoints responses. Ideally,
+**Disclaimer:** The test time is due to the delay set for the mocked api and endpoints responses. Ideally, all business logic inside the absence service should be in a backend and and then use jest.mock to mock the servers' response.
 
 ## ⚙️ How to run project locally
 
