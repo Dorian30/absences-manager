@@ -18,7 +18,7 @@ import {
 
 const absences = absencesMock.payload as Array<IAbsence>;
 const members = membersMock.payload as Array<IMember>;
-const delay = 1;
+const delay = 500;
 
 export interface IGetAbsencesParams {
   page: number;
