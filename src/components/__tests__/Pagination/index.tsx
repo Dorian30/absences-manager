@@ -13,7 +13,7 @@ describe('pagination', () => {
   });
 
   it('it render multiple page numbers', () => {
-    renderWithProviders(<Pagination totalRecords={100} />);
+    renderWithProviders(<Pagination totalRecords={100} pageLimit={10} />);
 
     expect(screen.getAllByRole('button').length).toBeGreaterThan(1);
   });

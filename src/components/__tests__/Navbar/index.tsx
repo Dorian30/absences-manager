@@ -24,6 +24,8 @@ describe('navbar', () => {
     const button = screen.getByRole('button', { name: 'theme-switcher' });
     userEvent.click(button);
 
-    expect(await screen.findByRole('img', { name: 'light-theme' }));
+    expect(
+      await screen.findByRole('img', { name: 'light-theme' })
+    ).toBeInTheDocument();
   });
 });
