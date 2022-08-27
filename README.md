@@ -14,7 +14,7 @@ We decided to implement this feature for our clients and we are calling it the A
 
 [Figma](https://www.figma.com/file/e12FJ7IR6PnNfJ2nkL6xD3/Crew?node-id=0%3A1)
 
-<img src="./app.png" width="350" title="crewmeister">
+<img src="./app.png" width="800" title="crewmeister">
 
 ## 💻 Tech Stack
 
