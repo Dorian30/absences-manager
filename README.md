@@ -35,18 +35,18 @@ We decided to implement this feature for our clients and we are calling it the A
 - [x] I want to see the first 10 absences, with the ability to paginate.
 - [x] I want to see a total number of absences.
 - [x] For each absence I want to see:
-  - [x] Member name
-  - [x] Type of absence
-  - [x] Period
-  - [x] Member note (when available)
-  - [x] Status (can be 'Requested', 'Confirmed' or 'Rejected')
-  - [x] Admitter note (when available)
+- [x] Member name
+- [x] Type of absence
+- [x] Period
+- [x] Member note (when available)
+- [x] Status (can be 'Requested', 'Confirmed' or 'Rejected')
+- [x] Admitter note (when available)
 - [x] I want to filter absences by type.
 - [x] I want to filter absences by date.
 - [x] I want to see a loading state until the list is available.
 - [x] I want to see an error state if the list is unavailable.
 - [x] I want to see an empty state if there are no results.
-- [x] (Bonus) I can generate an iCal file and import it into outlook.
+- [x] I can generate an iCal file and import it into outlook. (Bonus)
 
 ## 🪄 Enhancements
 
