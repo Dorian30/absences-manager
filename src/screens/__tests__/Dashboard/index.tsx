@@ -90,7 +90,7 @@ describe('Dashboard', () => {
     );
   });
 
-  it('filters absences by date range and absence type', async () => {
+  it('filters absences by both date range and absence type', async () => {
     renderWithProviders(<Dashboard />);
 
     userEvent.click(screen.getByRole('img', { name: 'period' }));
@@ -115,6 +115,22 @@ describe('Dashboard', () => {
       ).toBeInTheDocument();
       expect(within(row).getByText(/vacation/i)).toBeInTheDocument();
     });
+  });
+
+  it('fetchs all absences entries when an invalid interval is set', async () => {
+    renderWithProviders(<Dashboard />);
+
+    userEvent.click(screen.getByRole('img', { name: 'period' }));
+
+    const dateFromInput = screen.getByPlaceholderText(/from/i);
+    userEvent.type(dateFromInput, '2017-04-01');
+
+    const dateToInput = screen.getByPlaceholderText(/to/i);
+    userEvent.type(dateToInput, '2017-03-01');
+
+    expect(
+      await screen.findByText('Showing 10 items out of 42')
+    ).toBeInTheDocument();
   });
 
   it('renders pagination', async () => {
