@@ -126,7 +126,7 @@ src
 └───interfaces // General app interfaces
 └───constants
     | routes.ts
-└───redux
+└───store
 │      └───user // Specific state for the user
 │      └──index.ts // Global state & reducer
 │      └──types.ts
