@@ -1,46 +1,142 @@
-# Getting Started with Create React App
+# 🚀 Crewmeister Challenge
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## Context
 
-In the project directory, you can run:
+---
 
-### `npm start`
+At Crewmeister we like to work closely with our clients, listening to their demands and developing solutions for their problems. One of the most requested features is a way for company owners to manage sickness and vacations of employees.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+We decided to implement this feature for our clients and we are calling it the Absence Manager.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+[Vercel App](https://absences-manager.vercel.app/)
 
-### `npm test`
+[Figma](https://www.figma.com/file/e12FJ7IR6PnNfJ2nkL6xD3/Crew?node-id=0%3A1)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 💻 Tech Stack
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- React
+- Tests: Jest + react-testing-library
+- ESLint + Prettier + Husky + Staged-lint
+- Redux + RTK and RTK Query
+- Typescript.
+- StyledComponents
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 📝 Product Requirements
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+- [x] I want to see a list of absences including the names of the employees.
+- [x] I want to see the first 10 absences, with the ability to paginate.
+- [x] I want to see a total number of absences.
+- [x] For each absence I want to see:
+  - [x] Member name
+  - [x] Type of absence
+  - [x] Period
+  - [x] Member note (when available)
+  - [x] Status (can be 'Requested', 'Confirmed' or 'Rejected')
+  - [x] Admitter note (when available)
+- [x] I want to filter absences by type.
+- [x] I want to filter absences by date.
+- [x] I want to see a loading state until the list is available.
+- [x] I want to see an error state if the list is unavailable.
+- [x] I want to see an empty state if there are no results.
+- [x] (Bonus) I can generate an iCal file and import it into outlook.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## 🪄 Enhancements
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+A list of enhancements made that were not included in the initial product deliverable especifications or tech requirements, but were implemented to enhance the product further.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+- Theme based styles with styled-components.
+- Figma first sketch with the color palette, dark/light theme and assets.
+- Mobile first responsive implementation.
+- Absences filtering through both type and date range at the same time.
+- Login proposal within figma.
 
-## Learn More
+## 💡Improvements
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+---
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+A list of nice to haves or technical and functional improvements to enhance the product or module on next iterations.
+
+- **Information Modal:** Add a modal to show more information about the absence entry upon clicking on it. Specially for mobile.
+- **Toast:** Add a toast for success or error messages.
+- **Internacionalization:** Implement i18n for internatitonalization.
+- **UI framework:** Include either Material UI or Chakra UI to keep a consistent and accesible UI throughout the application and different product modules or build a custom design system with reusable components from scratch with company's brand.
+- **React hook form:** Implemente RHF to better handle table and form states.
+- **React Query:** to manage server state data. It uses a stale while revalidating approach to access cache data while it revalidates it asynchronously making the client state managament small. This reduces the boilerplate that comes with Redux, and it is more efficient when it comes to handling server state data.
+- **Stylelint:** Add a style linter as well for rules and improve code quality.
+- **Storybook:** Add interactive documentation to describe components behaviour.
+
+## 💬 Convention
+
+---
+
+Following commitizen convention every commit is in active voice with one of these prefix: chore, feat, fix, docs, tests. For branch names the following convention is set:
+
+`feat|fix|chore|tests/#ticket__description`
+
+Commit messages have the following structure:
+
+`feat|fix|chore|tests: [#ticket-number] summary`
+
+For every ticket or task a branch is made and then a pull request open. Once is approved, it is merge through squash a merge to keep the commit tree clean.
+
+## 🧪 Testing
+
+---
+
+Both unit and integration testing were implemented. As [Guillermo Rauch](https://twitter.com/rauchg/status/807626710350839808?s=20&t=A520xO44xTM0Fone8dzdmQ) said: Write tests. Not too many. Mostly integration.
+
+## 🗂 Folder's Architecture
+
+---
+
+```
+src
+│
+└──components
+│     └──index.ts
+│     └──__tests__
+│     └──App
+│     └──Input
+│     └──Text
+│     └──Button
+│     └──etc
+└──screens
+│     └── index.ts
+│     └── __tests__
+│     └──MyScreenComponent
+│           └──assets // Screen specific app assets
+│           └──components
+│           └──constants.ts
+│           └──utils.ts
+│           └──index.tsx
+│           └──types.ts
+│
+└───assets // General app assets
+└───models
+└───interfaces // General app interfaces
+└───constants
+    | routes.ts
+└───redux
+│      └───user // Specific state for the user
+│      └──index.ts // Global state & reducer
+│      └──types.ts
+│      └──actions.ts
+│
+└───services
+│     └──__tests__
+│     └──MyScreenComponent
+│           └── utils.ts
+│           └──index.tsx
+│
+└───utils
+│     └──index.ts // Entry point
+│     └──__tests__
+```
