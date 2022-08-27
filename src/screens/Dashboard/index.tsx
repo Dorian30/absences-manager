@@ -156,7 +156,7 @@ export function Dashboard() {
                           id="all"
                           name="period"
                           checked={!period}
-                          onClick={handleOnPeriodAll}
+                          onChange={handleOnPeriodAll}
                         />
                       </Row>
                       <label>Date Range:</label>
