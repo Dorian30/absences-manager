@@ -58,6 +58,7 @@ export const absencesApi = createApi({
         new Promise(resolve =>
           // Imitates request delay.
           setTimeout(() => {
+            // Business logic
             const pageLimit = 10;
             const filteredAbsences = compose(
               mapMembersToAbsences(members),
@@ -65,6 +66,7 @@ export const absencesApi = createApi({
               filterByType(type)
             )(absences);
 
+            // Return
             resolve({
               data: {
                 absences: slice(
@@ -81,6 +83,7 @@ export const absencesApi = createApi({
       queryFn: ({ type, period }) =>
         new Promise(resolve =>
           setTimeout(() => {
+            // Business logic
             const iCal = compose<string>(
               createICal,
               createICalEvents,
@@ -89,6 +92,7 @@ export const absencesApi = createApi({
               filterByType(type)
             )(absences);
 
+            // Return
             resolve({
               data: iCal
             });

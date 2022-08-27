@@ -1,6 +1,18 @@
 # 🚀 Crewmeister Challenge
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). Read the readme for further instructions on running the project, project's conventions, tech stack, tech decisions.
+
+## Summary
+
+- [Context](#Context)
+- [Tech Stack](#💻-tech-stack)
+- [Product Requirements](#📝-product-requirements)
+- [Enhancements](#🪄-enhancements)
+- [Improvements](#💡improvements)
+- [Testing](#🧪-testing)
+- [Git Convention](#💬-convention)
+- [How to run project locally](#⚙️-how-to-run-project-locally)
+- [Folders structure](#🗂-folders-architecture)
 
 ## Context
 
@@ -68,12 +80,14 @@ A list of nice to haves or technical and functional improvements to enhance the 
 
 - **Information Modal:** Add a modal to show more information about the absence entry upon clicking on it. Specially for mobile.
 - **Toast:** Add a toast for success or error messages.
-- **Internacionalization:** Implement i18n for internatitonalization.
-- **UI framework:** Include either Material UI or Chakra UI to keep a consistent and accesible UI throughout the application and different product modules or build a custom design system with reusable components from scratch with company's brand.
+- **Internacionalization:** Implement `i18n` for internatitonalization.
+- **UI framework:** Include either `Material UI` or `Chakra UI` to keep a consistent and accesible UI throughout the application and different product modules or build a custom design system with reusable components from scratch with company's brand.
 - **React hook form:** Implemente RHF to better handle table and form states.
 - **React Query:** to manage server state data. It uses a stale while revalidating approach to access cache data while it revalidates it asynchronously making the client state managament small. This reduces the boilerplate that comes with Redux, and it is more efficient when it comes to handling server state data.
 - **Stylelint:** Add a style linter as well for rules and improve code quality.
 - **Storybook:** Add interactive documentation to describe components behaviour.
+- **React error boundary:** Implement `react-error-boundary` to handle errors within the app and have a smoother UX experience.
+- **Backend API:** Implement a domain driven api with node and move business logic to api services.
 
 ## 💬 Convention
 
@@ -95,7 +109,28 @@ For every ticket or task a branch is made and then a pull request open. Once is 
 
 Both unit and integration testing were implemented. As [Guillermo Rauch](https://twitter.com/rauchg/status/807626710350839808?s=20&t=A520xO44xTM0Fone8dzdmQ) said: Write tests. Not too many. Mostly integration.
 
-## 🗂 Folder's Architecture
+<img src="./tests.png" width="800"  title="testing">
+
+**Disclaimer:** Test time is due to the delay set for mocked api and endpoints responses. Ideally,
+
+## ⚙️ How to run project locally
+
+In the project directory, you can run:
+
+### `npm start`
+
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+The page will reload if you make edits.\
+You will also see any lint errors in the console.
+
+### `npm test`
+
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+
+## 🗂 Folders Architecture
 
 ---
 

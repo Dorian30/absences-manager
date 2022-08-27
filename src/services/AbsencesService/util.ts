@@ -14,20 +14,27 @@ export const filterByType = (type: string | null) =>
 export const filterByDateInterval = (
   period: { from?: string; to?: string } | null
 ) =>
-  filterBy((absence: IAbsence) =>
-    !period
-      ? true
-      : areIntervalsOverlapping(
+  filterBy((absence: IAbsence) => {
+    try {
+      if (period?.from && period?.to) {
+        return areIntervalsOverlapping(
           {
             start: new Date(absence.startDate),
             end: new Date(absence.endDate)
           },
           {
-            start: new Date(period.from || 0),
-            end: period.to ? new Date(period.to) : new Date()
+            start: new Date(period.from),
+            end: new Date(period.to)
           }
-        )
-  );
+        );
+      } else {
+        throw new Error('Invalid interval set');
+      }
+    } catch (e) {
+      // Returns all entries when an invalid interval is set
+      return true;
+    }
+  });
 
 export const mapMembersToAbsences = (members: Array<IMember>) =>
   mapBy<IAbsence, TAbsences[number]>((absence: IAbsence) => {
