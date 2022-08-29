@@ -26,6 +26,8 @@ We decided to implement this feature for our clients and we are calling it the A
 
 [Vercel App](https://absences-manager.vercel.app/)
 
+[Heroku Api](https://absences-api.herokuapp.com/)
+
 [Figma](https://www.figma.com/file/e12FJ7IR6PnNfJ2nkL6xD3/Crew?node-id=0%3A1)
 
 <img src="./app.png" width="800" title="crewmeister">
@@ -40,6 +42,7 @@ We decided to implement this feature for our clients and we are calling it the A
 - Redux + RTK and RTK Query
 - Typescript.
 - StyledComponents
+- Mock Service Worker
 
 ## 📝 Product Requirements
 
@@ -68,10 +71,13 @@ We decided to implement this feature for our clients and we are calling it the A
 
 A list of enhancements made that were not included in the initial product deliverable especifications or tech requirements, but were implemented to enhance the product further.
 
+- Backend implementation with Node.
+- Api mock for testing with Mock Server Worker.
 - Theme based styles with styled-components.
 - Figma first sketch with the color palette, dark/light theme and assets.
 - Mobile first responsive implementation.
 - Absences filtering through both type and date range at the same time.
+- It retrieves all absences when date range is incomplete.
 - Login proposal within figma.
 
 ## 💡Improvements
@@ -89,7 +95,6 @@ A list of nice to haves or technical and functional improvements to enhance the 
 - **Stylelint:** Add a style linter as well for rules and improve code quality.
 - **Storybook:** Add interactive documentation to describe components behaviour.
 - **React error boundary:** Implement `react-error-boundary` to handle errors within the app and have a smoother UX experience.
-- **Backend API:** Implement a domain driven api with node and move business logic to api services.
 
 ## 💬 Convention
 
@@ -116,6 +121,10 @@ Both unit and integration testing were implemented. As [Guillermo Rauch](https:/
 **Disclaimer:** The test time is due to the delay set for the mocked api and endpoints responses. Ideally, all business logic inside the absence service should be in a backend and and then use jest.mock to mock the servers' response.
 
 ## ⚙️ How to run project locally
+
+You need to add an env:
+
+REACT_APP_API_URL=https://absences-api.herokuapp.com
 
 In the project directory, you can run:
 

@@ -43,3 +43,6 @@ export function renderWithProviders(
     ...render(ui, { wrapper: Wrapper, ...renderOptions })
   };
 }
+
+export const apiUrl = (path: string) =>
+  `${process.env.REACT_APP_API_URL}${path}`;
