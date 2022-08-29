@@ -42,6 +42,7 @@ We decided to implement this feature for our clients and we are calling it the A
 - Redux + RTK and RTK Query
 - Typescript.
 - StyledComponents
+- Mock Service Worker
 
 ## 📝 Product Requirements
 
@@ -70,10 +71,13 @@ We decided to implement this feature for our clients and we are calling it the A
 
 A list of enhancements made that were not included in the initial product deliverable especifications or tech requirements, but were implemented to enhance the product further.
 
+- Backend implementation with Node.
+- Api mock for testing with Mock Server Worker.
 - Theme based styles with styled-components.
 - Figma first sketch with the color palette, dark/light theme and assets.
 - Mobile first responsive implementation.
 - Absences filtering through both type and date range at the same time.
+- It retrieves all absences when date range is incomplete.
 - Login proposal within figma.
 
 ## 💡Improvements
@@ -91,7 +95,6 @@ A list of nice to haves or technical and functional improvements to enhance the 
 - **Stylelint:** Add a style linter as well for rules and improve code quality.
 - **Storybook:** Add interactive documentation to describe components behaviour.
 - **React error boundary:** Implement `react-error-boundary` to handle errors within the app and have a smoother UX experience.
-- **Backend API:** Implement a domain driven api with node and move business logic to api services.
 
 ## 💬 Convention
 
