@@ -70,7 +70,7 @@ export function Dashboard() {
     try {
       const { data: iCal } = await getICalendar({ type, from, to });
       if (!iCal) throw new Error();
-      window.open(encodeURI('data:text/calendar;charset=utf8,' + iCal));
+      window.open(encodeURI('data:text/calendar;charset=utf8,' + iCal.text));
     } catch (e) {
       console.log(e);
     }

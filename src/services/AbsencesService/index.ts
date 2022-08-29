@@ -49,12 +49,13 @@ export const absencesApi = createApi({
         totalRecords: Number(meta?.response?.headers.get('X-Total-Count'))
       })
     }),
-    getICalendar: builder.query<string, ICreateCalendarParams>({
-      query: (params: ICreateCalendarParams) =>
-        `/calendar?${qs.stringify(params, {
+    getICalendar: builder.query<{ text: string }, ICreateCalendarParams>({
+      query: (params: ICreateCalendarParams) => ({
+        url: `/calendar?${qs.stringify(params, {
           encode: false,
           skipNulls: true
         })}`
+      })
     })
   })
 });
