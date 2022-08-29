@@ -1,8 +1,23 @@
 import { screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import { Dashboard } from 'src/screens';
-import { renderWithProviders } from 'src/utils';
+import { renderWithProviders, apiUrl } from 'src/utils';
+
+const server = setupServer(
+  rest.get(apiUrl('/absences'), (_, res, ctx) => {
+    return res(ctx.json([]));
+  }),
+  rest.get(apiUrl('/calendar'), (_, res, ctx) => {
+    return res(ctx.body(''));
+  })
+);
+
+beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
 
 describe('Dashboard', () => {
   it('renders', () => {
@@ -31,15 +46,54 @@ describe('Dashboard', () => {
   });
 
   it('retrieves absences and displays them', async () => {
+    server.use(
+      rest.get(apiUrl('/absences'), (req, res, ctx) => {
+        return res(
+          ctx.json([
+            {
+              endDate: '2017-01-13',
+              id: 2351,
+              startDate: '2018-01-13',
+              type: 'sickness',
+              userId: 2664
+            }
+          ])
+        );
+      })
+    );
+
     renderWithProviders(<Dashboard />);
 
     const tbody = (await screen.findAllByRole('rowgroup'))[1];
     const absences = await within(tbody).findAllByRole('row');
 
-    expect(absences.length).toBeGreaterThan(1);
+    expect(absences.length).toBe(1);
   });
 
   it('filters absences by sickness type', async () => {
+    server.use(
+      rest.get(apiUrl('/absences'), (req, res, ctx) => {
+        return res(
+          ctx.json([
+            {
+              endDate: '2017-01-13',
+              id: 2351,
+              startDate: '2018-01-13',
+              type: 'sickness',
+              userId: 2664
+            },
+            {
+              endDate: '2019-01-13',
+              id: 9234,
+              startDate: '2022-01-13',
+              type: 'sickness',
+              userId: 4634
+            }
+          ])
+        );
+      })
+    );
+
     renderWithProviders(<Dashboard />);
 
     userEvent.click(screen.getByRole('img', { name: 'type' }));
@@ -54,6 +108,29 @@ describe('Dashboard', () => {
   });
 
   it('filters absences by vacation type', async () => {
+    server.use(
+      rest.get(apiUrl('/absences'), (req, res, ctx) => {
+        return res(
+          ctx.json([
+            {
+              endDate: '2017-01-13',
+              id: 2351,
+              startDate: '2018-01-13',
+              type: 'vacation',
+              userId: 2664
+            },
+            {
+              endDate: '2019-01-13',
+              id: 9234,
+              startDate: '2022-01-13',
+              type: 'vacation',
+              userId: 4634
+            }
+          ])
+        );
+      })
+    );
+
     renderWithProviders(<Dashboard />);
 
     userEvent.click(screen.getByRole('img', { name: 'type' }));
@@ -68,6 +145,31 @@ describe('Dashboard', () => {
   });
 
   it('filters absences that overlap with the given date interval', async () => {
+    server.use(
+      rest.get(apiUrl('/absences'), (req, res, ctx) => {
+        return res(
+          ctx.json([
+            {
+              endDate: '2017-04-13',
+              id: 2351,
+              startDate: '2017-03-13',
+              type: 'sickness',
+              period: '13/03/2017 - 13/04/2017',
+              userId: 2664
+            },
+            {
+              endDate: '2017-04-30',
+              id: 9234,
+              startDate: '2017-03-20',
+              period: '20/03/2017 - 30/04/2017',
+              type: 'sickness',
+              userId: 4634
+            }
+          ])
+        );
+      })
+    );
+
     renderWithProviders(<Dashboard />);
 
     userEvent.click(screen.getByRole('img', { name: 'period' }));
@@ -91,6 +193,31 @@ describe('Dashboard', () => {
   });
 
   it('filters absences by both date range and absence type', async () => {
+    server.use(
+      rest.get(apiUrl('/absences'), (req, res, ctx) => {
+        return res(
+          ctx.json([
+            {
+              endDate: '2017-04-13',
+              id: 2351,
+              startDate: '2017-03-13',
+              type: 'vacation',
+              period: '13/03/2017 - 13/04/2017',
+              userId: 2664
+            },
+            {
+              endDate: '2017-04-30',
+              id: 9234,
+              startDate: '2017-03-20',
+              period: '20/03/2017 - 30/04/2017',
+              type: 'vacation',
+              userId: 4634
+            }
+          ])
+        );
+      })
+    );
+
     renderWithProviders(<Dashboard />);
 
     userEvent.click(screen.getByRole('img', { name: 'period' }));
@@ -118,6 +245,25 @@ describe('Dashboard', () => {
   });
 
   it('fetchs all absences entries when an invalid interval is set', async () => {
+    server.use(
+      rest.get(apiUrl('/absences'), (req, res, ctx) => {
+        return res(
+          ctx.json(
+            Array(10)
+              .fill(null)
+              .map((_, index) => ({
+                endDate: '2017-04-13',
+                id: index,
+                startDate: '2017-03-13',
+                type: 'sickness',
+                period: '13/03/2017 - 13/04/2017'
+              }))
+          ),
+          ctx.set({ 'X-Total-Count': '15' })
+        );
+      })
+    );
+
     renderWithProviders(<Dashboard />);
 
     userEvent.click(screen.getByRole('img', { name: 'period' }));
@@ -129,11 +275,30 @@ describe('Dashboard', () => {
     userEvent.type(dateToInput, '2017-03-01');
 
     expect(
-      await screen.findByText('Showing 10 items out of 42')
+      await screen.findByText('Showing 10 items out of 15')
     ).toBeInTheDocument();
   });
 
   it('renders pagination', async () => {
+    server.use(
+      rest.get(apiUrl('/absences'), (req, res, ctx) => {
+        return res(
+          ctx.json(
+            Array(10)
+              .fill(null)
+              .map((_, index) => ({
+                endDate: '2017-04-13',
+                id: index,
+                startDate: '2017-03-13',
+                type: 'sickness',
+                period: '13/03/2017 - 13/04/2017'
+              }))
+          ),
+          ctx.set({ 'X-Total-Count': '15' })
+        );
+      })
+    );
+
     renderWithProviders(<Dashboard />);
 
     const pages = await screen.findAllByRole('button', { name: /\d/ });
@@ -142,6 +307,41 @@ describe('Dashboard', () => {
   });
 
   it('shows second page of absences list when clicking on pagination', async () => {
+    server.use(
+      rest.get(apiUrl('/absences'), (req, res, ctx) => {
+        const page = Number(req.url.searchParams.get('page'));
+        return page === 1
+          ? res(
+              ctx.json(
+                Array(10)
+                  .fill(null)
+                  .map((_, index) => ({
+                    endDate: '2017-04-13',
+                    id: index,
+                    startDate: '2017-03-13',
+                    type: 'sickness',
+                    period: '13/03/2017 - 13/04/2017'
+                  }))
+              ),
+              ctx.set({ 'X-Total-Count': '15' })
+            )
+          : res(
+              ctx.json(
+                Array(5)
+                  .fill(null)
+                  .map((_, index) => ({
+                    endDate: '2017-04-13',
+                    id: index,
+                    startDate: '2017-03-13',
+                    type: 'sickness',
+                    period: '13/03/2017 - 13/04/2017'
+                  }))
+              ),
+              ctx.set({ 'X-Total-Count': '15' })
+            );
+      })
+    );
+
     renderWithProviders(<Dashboard />);
 
     const button = await screen.findByRole('button', { name: /2/ });
@@ -155,7 +355,29 @@ describe('Dashboard', () => {
     const tbody = (await screen.findAllByRole('rowgroup'))[1];
     const absences = await within(tbody).findAllByRole('row');
 
-    expect(absences.length).toBeGreaterThan(1);
+    expect(absences.length).toBe(5);
+  });
+
+  it('renders error message when it can fetch data', async () => {
+    server.use(
+      rest.get(apiUrl('/absences'), (req, res, ctx) => {
+        return res(ctx.status(500));
+      })
+    );
+
+    renderWithProviders(<Dashboard />);
+
+    expect(
+      await screen.findByText(/There was an error with your request/i)
+    ).toBeInTheDocument();
+  });
+
+  it('renders empty message status when there are no absences to display', async () => {
+    renderWithProviders(<Dashboard />);
+
+    expect(
+      await screen.findByText(/There are no absences entries to display/i)
+    ).toBeInTheDocument();
   });
 
   it('renders generate iCal button', () => {
