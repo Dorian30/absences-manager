@@ -26,6 +26,8 @@ We decided to implement this feature for our clients and we are calling it the A
 
 [Vercel App](https://absences-manager.vercel.app/)
 
+[Heroku Api](https://absences-api.herokuapp.com/)
+
 [Figma](https://www.figma.com/file/e12FJ7IR6PnNfJ2nkL6xD3/Crew?node-id=0%3A1)
 
 <img src="./app.png" width="800" title="crewmeister">
@@ -116,6 +118,10 @@ Both unit and integration testing were implemented. As [Guillermo Rauch](https:/
 **Disclaimer:** The test time is due to the delay set for the mocked api and endpoints responses. Ideally, all business logic inside the absence service should be in a backend and and then use jest.mock to mock the servers' response.
 
 ## ⚙️ How to run project locally
+
+You need to add an env:
+
+REACT_APP_API_URL=https://absences-api.herokuapp.com
 
 In the project directory, you can run:
 

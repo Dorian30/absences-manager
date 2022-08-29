@@ -1,4 +1,4 @@
-import { screen, waitFor, within } from '@testing-library/react';
+import { screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { Dashboard } from 'src/screens';
@@ -173,17 +173,5 @@ describe('Dashboard', () => {
     userEvent.click(button);
 
     expect(button).toBeDisabled();
-  });
-
-  it('downloads the iCal', async () => {
-    renderWithProviders(<Dashboard />);
-    const download = jest
-      .spyOn(global.window, 'open')
-      .mockImplementation(jest.fn());
-
-    const button = screen.getByRole('button', { name: 'Generate iCal' });
-    userEvent.click(button);
-
-    await waitFor(() => expect(download).toHaveBeenCalled());
   });
 });
