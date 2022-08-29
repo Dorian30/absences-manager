@@ -16,14 +16,16 @@ import { isEmpty } from 'src/utils';
 export function Dashboard() {
   const [currentPage, setCurrentPage] = useState(1);
   const [type, setType] = useState<IGetAbsencesParams['type']>(null);
-  const [period, setPeriod] = useState<IGetAbsencesParams['period']>(null);
+  const [from, setFrom] = useState<string | null>(null);
+  const [to, setTo] = useState<string | null>(null);
   const [skip, setSkip] = useState(false);
 
   const { data, isFetching, isSuccess, isError, refetch } = useGetAbsencesQuery(
     {
       page: currentPage,
       type,
-      period
+      from,
+      to
     },
     { skip }
   );
@@ -38,28 +40,35 @@ export function Dashboard() {
 
   const handleOnPeriodAll = () => {
     setSkip(true);
-    setPeriod(null);
+    setTo(null);
+    setFrom(null);
     setCurrentPage(1);
     setSkip(false);
   };
 
-  const handleOnPeriod =
-    (date: 'from' | 'to'): ChangeEventHandler<HTMLInputElement> =>
-    ({ currentTarget: { value } }) => {
-      setSkip(true);
-      setPeriod(prevState => ({
-        ...(typeof prevState === 'object' ? prevState : {}),
-        [date]: value
-      }));
-      setCurrentPage(1);
-      setSkip(false);
-    };
+  const handleOnTo: ChangeEventHandler<HTMLInputElement> = ({
+    currentTarget: { value }
+  }) => {
+    setSkip(true);
+    setTo(value);
+    setCurrentPage(1);
+    setSkip(false);
+  };
+
+  const handleOnFrom: ChangeEventHandler<HTMLInputElement> = ({
+    currentTarget: { value }
+  }) => {
+    setSkip(true);
+    setFrom(value);
+    setCurrentPage(1);
+    setSkip(false);
+  };
 
   const [getICalendar, iCalQuery] = useLazyGetICalendarQuery();
 
   const handleOnGenerateIcal = async () => {
     try {
-      const { data: iCal } = await getICalendar({ type, period });
+      const { data: iCal } = await getICalendar({ type, from, to });
       if (!iCal) throw new Error();
       window.open(encodeURI('data:text/calendar;charset=utf8,' + iCal));
     } catch (e) {
@@ -155,22 +164,22 @@ export function Dashboard() {
                         <FilterCheckbox
                           id="all"
                           name="period"
-                          checked={!period}
+                          checked={!from && !to}
                           onChange={handleOnPeriodAll}
                         />
                       </Row>
                       <label>Date Range:</label>
                       <Row justifyContent="space-between" alignItems="center">
                         <DateRangeInput
-                          name="period.from"
-                          onChange={handleOnPeriod('from')}
-                          value={period?.from || ''}
+                          name="from"
+                          onChange={handleOnFrom}
+                          value={from || ''}
                           placeholder="From"
                         />
                         <DateRangeInput
                           name="period.to"
-                          onChange={handleOnPeriod('to')}
-                          value={period?.to || ''}
+                          onChange={handleOnTo}
+                          value={to || ''}
                           placeholder="To"
                         />
                       </Row>
@@ -185,7 +194,7 @@ export function Dashboard() {
           <tbody>
             {!isFetching &&
               absences?.map(item => (
-                <TableRow key={`${item.id}-${type}-${JSON.stringify(period)}`}>
+                <TableRow key={`${item.id}-${type}-${from}-${to}`}>
                   <TableCell>{item.memberName}</TableCell>
                   <TableCell>{item.type}</TableCell>
                   <TableCell>{item.status}</TableCell>

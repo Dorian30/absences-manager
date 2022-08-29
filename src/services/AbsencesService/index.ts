@@ -6,12 +6,14 @@ import { IAbsence, IMember, TMerge } from 'src/interfaces';
 export interface IGetAbsencesParams {
   page: number;
   type: 'sickness' | 'vacation' | null;
-  period: { from?: string; to?: string } | null;
+  from: string | null;
+  to: string | null;
 }
 
 export interface ICreateCalendarParams {
   type: 'sickness' | 'vacation' | null;
-  period: { from?: string; to?: string } | null;
+  from: string | null;
+  to: string | null;
 }
 
 export type TAbsences = Array<
@@ -37,7 +39,11 @@ export const absencesApi = createApi({
       IGetAbsencesParams
     >({
       query: (params: IGetAbsencesParams) =>
-        `/absences?${qs.stringify(params)}`,
+        `/absences?${qs.stringify(params, {
+          encode: false,
+          indices: false,
+          skipNulls: true
+        })}`,
       transformResponse: (response: TAbsences, meta) => ({
         absences: response,
         totalRecords: Number(meta?.response?.headers.get('X-Total-Count'))
@@ -45,7 +51,10 @@ export const absencesApi = createApi({
     }),
     getICalendar: builder.query<string, ICreateCalendarParams>({
       query: (params: ICreateCalendarParams) =>
-        `/calendar?${qs.stringify(params)}`
+        `/calendar?${qs.stringify(params, {
+          encode: false,
+          skipNulls: true
+        })}`
     })
   })
 });
