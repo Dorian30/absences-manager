@@ -1,3 +1,5 @@
+import { IMember } from './IMembers';
+
 export interface IAbsence {
   admitterId: null;
   admitterNote: string;
@@ -11,4 +13,10 @@ export interface IAbsence {
   startDate: string;
   type: 'sickness' | 'vacation';
   userId: number;
+}
+
+export interface IMemberAbsence extends IAbsence {
+  memberName: IMember['name'];
+  status: 'Requested' | 'Confirmed' | 'Rejected';
+  period: string;
 }
