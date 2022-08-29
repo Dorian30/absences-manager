@@ -1,4 +1,4 @@
-import { range, isEmpty, filterBy, mapBy, slice } from 'src/utils';
+import { range, isEmpty } from 'src/utils';
 
 describe('array', () => {
   describe('range', () => {
@@ -34,32 +34,6 @@ describe('array', () => {
 
     it('returns true if it receives undefined as a param', () => {
       expect(isEmpty(undefined)).toBe(true);
-    });
-  });
-
-  describe('mapBy', () => {
-    it('should apply map fn to every element of the array', () => {
-      const mapFn = (item: number) => item + 5;
-
-      expect(mapBy(mapFn)([10, 2, 1, 8, 6])).toStrictEqual([15, 7, 6, 13, 11]);
-    });
-  });
-
-  describe('filterBy', () => {
-    it('should apply filter fn to every element of the array', () => {
-      const filterFn = (item: number) => item > 5;
-
-      expect(filterBy(filterFn)([10, 2, 1, 8, 6])).toStrictEqual([10, 8, 6]);
-    });
-  });
-
-  describe('slice', () => {
-    it('should slice arr based on initial "to" and "from" params', () => {
-      expect(slice(1, 3)([10, 2, 1, 8, 6])).toStrictEqual([2, 1]);
-    });
-
-    it('returns an empty array when "to" is greater than "from"', () => {
-      expect(slice(5, 1)([10, 2, 1, 8, 6])).toStrictEqual([]);
     });
   });
 });
