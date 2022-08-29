@@ -186,7 +186,7 @@ export function Dashboard() {
             {!isFetching &&
               absences?.map(item => (
                 <TableRow key={`${item.id}-${type}-${JSON.stringify(period)}`}>
-                  <TableCell>{item.name}</TableCell>
+                  <TableCell>{item.memberName}</TableCell>
                   <TableCell>{item.type}</TableCell>
                   <TableCell>{item.status}</TableCell>
                   <TableCell>{item.period}</TableCell>
