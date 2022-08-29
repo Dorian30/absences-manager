@@ -28,6 +28,8 @@ We decided to implement this feature for our clients and we are calling it the A
 
 [Heroku Api](https://absences-api.herokuapp.com/)
 
+[Api Repository](https://github.com/Dorian30/absences-api)
+
 [Figma](https://www.figma.com/file/e12FJ7IR6PnNfJ2nkL6xD3/Crew?node-id=0%3A1)
 
 <img src="./app.png" width="800" title="crewmeister">
